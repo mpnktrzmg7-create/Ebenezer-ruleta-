@@ -21,7 +21,7 @@ body {
   min-height: 100vh;
   background: transparent;
   color: #171717;
-  font-family: Arial, sans-serif;
+  font-family: Arial,sans-serif;
   text-align: center;
 }
 
@@ -60,7 +60,7 @@ h2 {
   object-fit: contain;
 }
 
-/* ESCENA DE LA RULETA */
+/* ESCENA */
 
 .wheel-scene {
   position: relative;
@@ -91,15 +91,18 @@ h2 {
   filter: drop-shadow(0 8px 10px #0002);
 }
 
-/* MARCO EXTERIOR 3D */
+/* MARCO PERFECTAMENTE CIRCULAR */
 
 .wheel-frame {
   position: relative;
+  display: block;
   width: min(78vw,330px);
-  aspect-ratio: 1;
+  height: auto;
+  aspect-ratio: 1 / 1;
   margin: 37px auto 25px;
   padding: 12px;
   border-radius: 50%;
+  flex-shrink: 0;
 
   background: linear-gradient(
     135deg,
@@ -123,22 +126,17 @@ h2 {
   z-index: 1;
 }
 
-/* RULETA GIRATORIA */
+/* RULETA CIRCULAR */
 
 .wheel {
   position: relative;
+  display: block;
   width: 100%;
   height: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
-
   border: 4px solid #60441f;
-
-  /*
-    5%  = 57% de la rueda = 205.2 grados
-    10% = 25% de la rueda = 90 grados
-    15% = 18% de la rueda = 64.8 grados
-  */
 
   background: conic-gradient(
     from 0deg,
@@ -153,9 +151,11 @@ h2 {
     0 3px 7px #0005;
 
   transition: transform 5s cubic-bezier(.12,.7,.1,1);
+  transform-origin: 50% 50%;
+  will-change: transform;
 }
 
-/* BRILLO SOBRE LOS SECTORES */
+/* BRILLO */
 
 .wheel::before {
   content: "";
@@ -174,7 +174,7 @@ h2 {
   pointer-events: none;
 }
 
-/* LINEAS DORADAS DIVISORIAS */
+/* DIVISIONES DORADAS */
 
 .divider {
   position: absolute;
@@ -195,6 +195,13 @@ h2 {
   z-index: 3;
 }
 
+/*
+  Los ángulos CSS giran en sentido horario
+  desde las 12.
+
+  Las líneas nacen del centro hacia abajo.
+*/
+
 .divider.one {
   transform: rotate(180deg);
 }
@@ -207,7 +214,7 @@ h2 {
   transform: rotate(115.2deg);
 }
 
-/* PORCENTAJES 3D */
+/* PORCENTAJES */
 
 .wheel-label {
   position: absolute;
@@ -223,7 +230,7 @@ h2 {
     0 6px 7px #000a;
 }
 
-/* 5% - CENTRO DEL SECTOR DE 205.2 GRADOS */
+/* 5% - SECTOR NEGRO GRANDE */
 
 .label-5 {
   top: 55%;
@@ -231,7 +238,7 @@ h2 {
   transform: translate(-50%,-50%);
 }
 
-/* 10% - CENTRO DEL SECTOR DE 90 GRADOS */
+/* 10% - SECTOR NEGRO */
 
 .label-10 {
   top: 70%;
@@ -240,7 +247,7 @@ h2 {
   font-size: 25px;
 }
 
-/* 15% - CENTRO DEL SECTOR DE 64.8 GRADOS */
+/* 15% - SECTOR CELESTE */
 
 .label-15 {
   top: 23%;
@@ -256,7 +263,7 @@ h2 {
   font-size: 25px;
 }
 
-/* CENTRO METALICO 3D */
+/* CENTRO METALICO */
 
 .wheel-center {
   position: absolute;
@@ -305,7 +312,7 @@ h2 {
   text-shadow: 0 2px 2px #fff;
 }
 
-/* PUA DORADA */
+/* PUA FIJA */
 
 .pointer {
   position: absolute;
@@ -333,7 +340,7 @@ h2 {
   filter: drop-shadow(0 5px 4px #0008);
 }
 
-/* FORMULARIO */
+/* FORMULARIO ORIGINAL */
 
 input,button {
   width: 100%;
@@ -530,7 +537,7 @@ btn.onclick = async () => {
     const discount = data.descuento;
 
     /*
-      DISTRIBUCION FINAL:
+      DISTRIBUCION:
 
       5%  = 57% = 205.2 grados
       10% = 25% = 90 grados
@@ -552,7 +559,11 @@ btn.onclick = async () => {
       throw Error('Descuento no reconocido.');
     }
 
-    angle += 1800 + ((360 - sector - angle % 360 + 360) % 360);
+    const target = (360 - sector + 360) % 360;
+    const current = ((angle % 360) + 360) % 360;
+    const extra = (target - current + 360) % 360;
+
+    angle += 1800 + extra;
 
     wheel.style.transform = `rotate(${angle}deg)`;
 
