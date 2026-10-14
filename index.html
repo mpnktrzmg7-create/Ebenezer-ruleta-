@@ -31,7 +31,6 @@ main {
   max-width: 500px;
   margin: auto;
   padding: 29px 20px 35px;
-  background: transparent;
 }
 
 small {
@@ -91,18 +90,25 @@ h2 {
   filter: drop-shadow(0 8px 10px #0002);
 }
 
-/* MARCO PERFECTAMENTE CIRCULAR */
+/* RULETA: MEDIDA FIJA E IGUAL EN AMBOS EJES */
 
 .wheel-frame {
+  --wheel-size: min(78vw, 330px);
+
   position: relative;
-  display: block;
-  width: min(78vw,330px);
-  height: auto;
+  display: grid;
+  place-items: center;
+
+  width: var(--wheel-size);
+  height: var(--wheel-size);
+  min-width: var(--wheel-size);
+  min-height: var(--wheel-size);
+
   aspect-ratio: 1 / 1;
   margin: 37px auto 25px;
   padding: 12px;
   border-radius: 50%;
-  flex-shrink: 0;
+  flex: none;
 
   background: linear-gradient(
     135deg,
@@ -126,13 +132,17 @@ h2 {
   z-index: 1;
 }
 
-/* RULETA CIRCULAR */
+/* DISCO INTERIOR */
 
 .wheel {
   position: relative;
   display: block;
+
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
@@ -151,11 +161,9 @@ h2 {
     0 3px 7px #0005;
 
   transition: transform 5s cubic-bezier(.12,.7,.1,1);
-  transform-origin: 50% 50%;
+  transform-origin: center center;
   will-change: transform;
 }
-
-/* BRILLO */
 
 .wheel::before {
   content: "";
@@ -195,13 +203,6 @@ h2 {
   z-index: 3;
 }
 
-/*
-  Los ángulos CSS giran en sentido horario
-  desde las 12.
-
-  Las líneas nacen del centro hacia abajo.
-*/
-
 .divider.one {
   transform: rotate(180deg);
 }
@@ -230,15 +231,11 @@ h2 {
     0 6px 7px #000a;
 }
 
-/* 5% - SECTOR NEGRO GRANDE */
-
 .label-5 {
   top: 55%;
   left: 75%;
   transform: translate(-50%,-50%);
 }
-
-/* 10% - SECTOR NEGRO */
 
 .label-10 {
   top: 70%;
@@ -246,8 +243,6 @@ h2 {
   transform: translate(-50%,-50%);
   font-size: 25px;
 }
-
-/* 15% - SECTOR CELESTE */
 
 .label-15 {
   top: 23%;
@@ -263,7 +258,7 @@ h2 {
   font-size: 25px;
 }
 
-/* CENTRO METALICO */
+/* CENTRO METÁLICO */
 
 .wheel-center {
   position: absolute;
@@ -312,35 +307,109 @@ h2 {
   text-shadow: 0 2px 2px #fff;
 }
 
-/* PUA FIJA */
+/* PÚA METÁLICA 3D CON BORDES */
 
 .pointer {
   position: absolute;
-  width: 46px;
-  height: 58px;
+  width: 54px;
+  height: 68px;
   left: 50%;
-  top: 7px;
+  top: -1px;
   transform: translateX(-50%);
-  z-index: 8;
+  z-index: 10;
+
+  filter: drop-shadow(0 5px 3px #0009);
+  pointer-events: none;
+}
+
+/* Contorno oscuro de la punta */
+
+.pointer-outline {
+  position: absolute;
+  inset: 0;
+
+  background: #4d3016;
+
+  clip-path: polygon(
+    5% 8%,
+    95% 8%,
+    91% 38%,
+    50% 100%,
+    9% 38%
+  );
+}
+
+/* Interior dorado */
+
+.pointer-metal {
+  position: absolute;
+  inset: 4px;
 
   background: linear-gradient(
     90deg,
-    #79511f,
-    #ffe9a4 45%,
-    #b17b34 75%,
-    #513419
+    #76501e 0%,
+    #d5a650 20%,
+    #fff2bb 43%,
+    #e6ba65 58%,
+    #956422 83%,
+    #60401b 100%
   );
 
   clip-path: polygon(
-    0 0,
-    100% 0,
-    50% 100%
+    5% 4%,
+    95% 4%,
+    89% 37%,
+    50% 100%,
+    11% 37%
   );
-
-  filter: drop-shadow(0 5px 4px #0008);
 }
 
-/* FORMULARIO ORIGINAL */
+/* Base redondeada que sostiene la púa */
+
+.pointer-cap {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 43px;
+  height: 24px;
+  border-radius: 50% 50% 35% 35%;
+
+  border: 3px solid #503318;
+
+  background: linear-gradient(
+    145deg,
+    #fff2c0,
+    #d7a44b 48%,
+    #80541e
+  );
+
+  box-shadow:
+    inset 0 2px 3px #fff9,
+    0 3px 3px #0006;
+}
+
+/* Tornillo decorativo */
+
+.pointer-cap::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #7b5424;
+  border: 1px solid #ffe6a0;
+
+  box-shadow: inset 0 1px 2px #0008;
+}
+
+/* FORMULARIO SIN CAMBIOS */
 
 input,button {
   width: 100%;
@@ -442,7 +511,11 @@ para tu próxima compra.
     alt=""
   >
 
-  <div class="pointer"></div>
+  <div class="pointer" aria-hidden="true">
+    <div class="pointer-outline"></div>
+    <div class="pointer-metal"></div>
+    <div class="pointer-cap"></div>
+  </div>
 
   <div class="wheel-frame">
 
@@ -535,19 +608,6 @@ btn.onclick = async () => {
     }
 
     const discount = data.descuento;
-
-    /*
-      DISTRIBUCION:
-
-      5%  = 57% = 205.2 grados
-      10% = 25% = 90 grados
-      15% = 18% = 64.8 grados
-
-      CENTROS:
-      5%  = 102.6 grados
-      10% = 250.2 grados
-      15% = 327.6 grados
-    */
 
     const sector = {
       5: 102.6,
