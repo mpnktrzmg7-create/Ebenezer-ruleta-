@@ -10,9 +10,6 @@
 
 <style>
 :root {
-  --gold-light: #fff1bd;
-  --gold: #d6a54b;
-  --gold-dark: #6e481c;
   --ink: #171717;
   --blue: #a9dcec;
 }
@@ -32,10 +29,7 @@ body {
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-
-  background:
-    url("./fondo.jpg")
-    center center / cover no-repeat fixed;
+  background: url("./fondo.jpg") center center / cover no-repeat fixed;
 }
 
 main {
@@ -115,13 +109,7 @@ h1 {
   filter: drop-shadow(0 8px 8px #0003);
 }
 
-/*
-  SISTEMA CIRCULAR
-
-  Un solo tamaño controla el ancho y alto.
-  El SVG conserva su proporción en todos
-  los dispositivos.
-*/
+/* RULETA RESPONSIVA */
 
 .roulette {
   --size: min(78vw, 350px);
@@ -129,8 +117,7 @@ h1 {
   position: relative;
   width: var(--size);
   height: var(--size);
-  min-width: 0;
-  flex: none;
+  aspect-ratio: 1 / 1;
   margin: 40px auto 28px;
   border-radius: 50%;
   z-index: 2;
@@ -139,20 +126,21 @@ h1 {
 .wheel-frame {
   position: absolute;
   inset: 0;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   padding: 12px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #fff8d8 0%,
-      #b98b3b 16%,
-      #ffe6a0 32%,
-      #704819 49%,
-      #f9d884 65%,
-      #936324 83%,
-      #fff0b9 100%
-    );
+  background: linear-gradient(
+    135deg,
+    #fff8d8 0%,
+    #b98b3b 16%,
+    #ffe6a0 32%,
+    #704819 49%,
+    #f9d884 65%,
+    #936324 83%,
+    #fff0b9 100%
+  );
 
   box-shadow:
     0 0 0 3px #513719,
@@ -163,13 +151,17 @@ h1 {
     inset 0 -5px 8px #422b19;
 }
 
+/* DISCO GIRATORIO */
+
 .wheel-disc {
-  display: block;
+  position: relative;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
-
   border: 4px solid #60441f;
 
   box-shadow:
@@ -179,13 +171,9 @@ h1 {
   transform: rotate(0deg);
   transform-origin: 50% 50%;
 
-  transition:
-    transform 5.2s cubic-bezier(.12,.72,.08,1);
-
+  transition: transform 5.2s cubic-bezier(.12,.72,.08,1);
   will-change: transform;
 }
-
-/* El SVG siempre es cuadrado */
 
 .wheel-svg {
   display: block;
@@ -195,24 +183,36 @@ h1 {
   border-radius: 50%;
 }
 
-/* TEXTOS SVG */
+/*
+  PORCENTAJES
+
+  Cada número se coloca sobre un radio
+  de su sector y se rota inicialmente
+  según el ángulo del sector.
+
+  Como el SVG completo gira, los textos
+  también giran con la rueda.
+
+  Cuando un sector llega arriba, su
+  porcentaje queda derecho.
+*/
 
 .sector-text {
-  font-family: Georgia, serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-weight: 900;
-  font-size: 11px;
+  font-size: 7px;
   fill: #fff8e7;
   stroke: #483018;
-  stroke-width: .35px;
+  stroke-width: 0.25px;
   paint-order: stroke fill;
   text-anchor: middle;
-  dominant-baseline: middle;
+  dominant-baseline: central;
 }
 
 .sector-text.blue {
   fill: #24313b;
   stroke: #f2fcff;
-  stroke-width: .6px;
+  stroke-width: 0.35px;
 }
 
 /* CENTRO METÁLICO */
@@ -224,20 +224,18 @@ h1 {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
   display: grid;
   place-items: center;
   border-radius: 50%;
   z-index: 5;
 
-  background:
-    linear-gradient(
-      145deg,
-      #fff3c4,
-      #c99a47 35%,
-      #76501f 65%,
-      #ffe9a6
-    );
+  background: linear-gradient(
+    145deg,
+    #fff3c4,
+    #c99a47 35%,
+    #76501f 65%,
+    #ffe9a6
+  );
 
   border: 5px solid #60401d;
 
@@ -253,16 +251,13 @@ h1 {
   width: 75%;
   height: 75%;
   border-radius: 50%;
-
-  background:
-    linear-gradient(145deg, #fff9e6, #e0bb76);
-
+  background: linear-gradient(145deg, #fff9e6, #e0bb76);
   color: #9d6b27;
   font-size: clamp(22px, 6vw, 37px);
   text-shadow: 0 2px 2px #fff;
 }
 
-/* PÚA DORADA CON BORDE */
+/* PÚA DORADA 3D */
 
 .pointer {
   position: absolute;
@@ -273,7 +268,6 @@ h1 {
   top: -32px;
   transform: translateX(-50%);
   pointer-events: none;
-
   filter: drop-shadow(0 5px 4px #0008);
 }
 
@@ -308,14 +302,11 @@ input {
 }
 
 button {
-  background:
-    linear-gradient(110deg, #ad0f24, #d62339);
-
+  background: linear-gradient(110deg, #ad0f24, #d62339);
   color: #fff;
   border: 0;
   font-weight: 800;
   cursor: pointer;
-
   box-shadow: 0 7px 16px #aa0d2433;
 }
 
@@ -395,8 +386,6 @@ button:disabled {
     --size: 350px;
   }
 }
-
-/* ACCESIBILIDAD */
 
 @media (prefers-reduced-motion: reduce) {
   .wheel-disc {
@@ -517,7 +506,7 @@ button:disabled {
         </svg>
       </div>
 
-      <!-- MARCO -->
+      <!-- MARCO DORADO -->
 
       <div class="wheel-frame">
 
@@ -618,13 +607,12 @@ const ANON_KEY =
 /*
   12 SECTORES IGUALES
 
-  Cada sector mide 30 grados.
+  9 sectores del 5%
+  2 sectores del 10%
+  1 sector del 15%
 
-  9 sectores = 5%
-  2 sectores = 10%
-  1 sector  = 15%
-
-  Los sectores especiales están separados.
+  Los dos sectores del 10%
+  están separados.
 */
 
 const prizes = [
@@ -644,7 +632,7 @@ const instagramInput = document.getElementById("instagram");
 let currentRotation = 0;
 let spinning = false;
 
-/* UTILIDADES GEOMÉTRICAS */
+/* GEOMETRÍA */
 
 function polarPoint(angle, radius) {
   const radians = angle * Math.PI / 180;
@@ -677,7 +665,17 @@ function createSvgElement(tag, attributes) {
   return element;
 }
 
-/* DIBUJAR LOS DOCE SECTORES */
+/*
+  DIBUJAR RULETA
+
+  El texto está orientado radialmente.
+
+  Cuando el sector apunta hacia arriba,
+  el número queda derecho.
+
+  El texto no se corrige durante el giro:
+  rota físicamente con el disco.
+*/
 
 function drawWheel() {
   sectorsGroup.replaceChildren();
@@ -708,16 +706,27 @@ function drawWheel() {
     sectorsGroup.appendChild(path);
 
     /*
-      Los números se colocan mediante
-      coordenadas polares, exactamente
-      en el centro angular del sector.
+      Radio 32:
+      números pequeños y bien ubicados.
     */
 
-    const labelPosition = polarPoint(centerAngle, 33);
+    const labelPosition = polarPoint(centerAngle, 32);
+
+    /*
+      El SVG usa ángulos horarios desde arriba.
+      Por eso la rotación inicial del texto
+      coincide con el centro de su sector.
+
+      Al girar el disco hasta llevar ese
+      centro a 0 grados, el texto queda
+      horizontal y derecho.
+    */
 
     const label = createSvgElement("text", {
       x: labelPosition.x,
       y: labelPosition.y,
+      transform:
+        `rotate(${centerAngle} ${labelPosition.x} ${labelPosition.y})`,
       class: discount === 15
         ? "sector-text blue"
         : "sector-text"
@@ -731,7 +740,7 @@ function drawWheel() {
 
 drawWheel();
 
-/* SELECCIONAR UN SECTOR DEL PREMIO */
+/* SECTORES QUE COINCIDEN CON EL PREMIO */
 
 function getMatchingSectors(discount) {
   return prizes
@@ -744,14 +753,13 @@ function randomIndex(max) {
 }
 
 /*
-  CALCULAR GIRO
+  ALINEAR SECTOR GANADOR CON LA PÚA
 
-  La púa está fija a las 12.
+  La púa está a las 12.
 
-  El sector elegido termina con su centro
-  exactamente debajo de la punta.
-
-  No se modifica el premio de Supabase.
+  El giro termina con el centro del
+  sector ganador apuntando exactamente
+  hacia arriba.
 */
 
 function getTargetRotation(discount) {
@@ -777,7 +785,7 @@ function getTargetRotation(discount) {
   return currentRotation + 1800 + difference;
 }
 
-/* RESULTADO SEGURO */
+/* MOSTRAR RESULTADO */
 
 function showPrize(discount, code) {
   result.replaceChildren();
@@ -789,10 +797,14 @@ function showPrize(discount, code) {
   codeElement.className = "result-code";
   codeElement.textContent = `Código: ${code}`;
 
-  result.append(title, document.createElement("br"), codeElement);
+  result.append(
+    title,
+    document.createElement("br"),
+    codeElement
+  );
 }
 
-/* GIRO Y SUPABASE */
+/* SUPABASE Y GIRO */
 
 button.addEventListener("click", async () => {
   if (spinning) return;
@@ -842,13 +854,12 @@ button.addEventListener("click", async () => {
     wheel.style.transform =
       `rotate(${currentRotation}deg)`;
 
-    /*
-      Esperamos a que termine la animación
-      antes de mostrar el resultado.
-    */
-
     setTimeout(() => {
-      showPrize(discount, String(data.codigo ?? ""));
+      showPrize(
+        discount,
+        String(data.codigo ?? "")
+      );
+
       spinning = false;
     }, 5300);
 
