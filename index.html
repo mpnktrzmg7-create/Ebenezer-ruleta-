@@ -38,10 +38,8 @@ small {
   letter-spacing: 4px;
 }
 
-h1 {
-  font-family: Georgia, serif;
-  font-size: 40px;
-  margin: 12px 0;
+p {
+  line-height: 1.5;
 }
 
 h2 {
@@ -50,25 +48,23 @@ h2 {
   margin: 16px 0 8px;
 }
 
-p {
-  line-height: 1.5;
-}
-
 .red {
   color: #c71922;
 }
 
 .brand-logo {
   display: block;
-  width: min(85%, 370px);
+  width: min(85%,370px);
   height: auto;
   margin: 8px auto 6px;
   object-fit: contain;
 }
 
+/* ESCENA DE LA RULETA */
+
 .wheel-scene {
   position: relative;
-  padding: 2px 0 4px;
+  padding: 12px 0 15px;
 }
 
 .decor-skate {
@@ -95,67 +91,251 @@ p {
   filter: drop-shadow(0 8px 10px #0002);
 }
 
-.wheel {
+/* MARCO EXTERIOR 3D */
+
+.wheel-frame {
   position: relative;
-  width: min(73vw, 310px);
+  width: min(78vw,330px);
   aspect-ratio: 1;
-  margin: 30px auto 25px;
-  border: 9px solid #b99558;
+  margin: 37px auto 25px;
+  padding: 12px;
   border-radius: 50%;
-  background: conic-gradient(
-    #c71922 0 180deg,
-    #eee 180deg 306deg,
-    #151515 306deg 360deg
+
+  background: linear-gradient(
+    135deg,
+    #fff5cf 0%,
+    #b58b42 15%,
+    #f6d68b 30%,
+    #73501f 48%,
+    #fce8ae 65%,
+    #9a6c2d 82%,
+    #fff0bf 100%
   );
-  box-shadow: 0 0 0 3px #6e4a25, 0 15px 35px #0002;
-  transition: transform 5s cubic-bezier(.12,.7,.1,1);
-}
 
-.wheel span {
-  position: absolute;
-  font-weight: 900;
-  font-size: 25px;
-  color: white;
-  left: 50%;
-  top: 50%;
-  transform-origin: center;
-}
+  box-shadow:
+    0 0 0 3px #513719,
+    0 8px 0 #795325,
+    0 14px 0 #382717,
+    0 23px 28px #0005,
+    inset 0 3px 5px #fff9,
+    inset 0 -5px 8px #422b19;
 
-.wheel span:nth-child(1) {
-  transform: translate(-50%,-50%) rotate(90deg) translateY(-105px) rotate(-90deg);
-}
-
-.wheel span:nth-child(2) {
-  color: #111;
-  transform: translate(-50%,-50%) rotate(242deg) translateY(-105px) rotate(-242deg);
-}
-
-.wheel span:nth-child(3) {
-  transform: translate(-50%,-50%) rotate(332deg) translateY(-105px) rotate(-332deg);
-}
-
-.pointer {
-  font-size: 36px;
-  color: #a6813f;
-  margin-bottom: -32px;
-  position: relative;
   z-index: 1;
 }
 
-.wheel:after {
-  content: '✦';
-  display: grid;
-  place-items: center;
-  position: absolute;
-  inset: 40%;
+/* RULETA GIRATORIA */
+
+.wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: #fff;
-  color: #c71922;
-  font-size: 35px;
-  border: 4px solid #222;
+  overflow: hidden;
+
+  border: 4px solid #60441f;
+
+  /*
+    5%  = 57% de la rueda = 205.2 grados
+    10% = 25% de la rueda = 90 grados
+    15% = 18% de la rueda = 64.8 grados
+  */
+
+  background: conic-gradient(
+    from 0deg,
+    #151515 0deg 205.2deg,
+    #242424 205.2deg 295.2deg,
+    #a9dcec 295.2deg 360deg
+  );
+
+  box-shadow:
+    inset 0 0 0 2px #fce7ac,
+    inset 0 0 18px #0007,
+    0 3px 7px #0005;
+
+  transition: transform 5s cubic-bezier(.12,.7,.1,1);
 }
 
-input, button {
+/* BRILLO SOBRE LOS SECTORES */
+
+.wheel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at 35% 25%,
+    #ffffff30,
+    transparent 48%,
+    #00000045 100%
+  );
+
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* LINEAS DORADAS DIVISORIAS */
+
+.divider {
+  position: absolute;
+  width: 3px;
+  height: 50%;
+  left: calc(50% - 1.5px);
+  top: 50%;
+  transform-origin: top center;
+
+  background: linear-gradient(
+    90deg,
+    #67451e,
+    #ffe7a0,
+    #9c6a29
+  );
+
+  box-shadow: 1px 0 2px #0007;
+  z-index: 3;
+}
+
+.divider.one {
+  transform: rotate(180deg);
+}
+
+.divider.two {
+  transform: rotate(25.2deg);
+}
+
+.divider.three {
+  transform: rotate(115.2deg);
+}
+
+/* PORCENTAJES 3D */
+
+.wheel-label {
+  position: absolute;
+  z-index: 4;
+  font-family: Georgia,serif;
+  font-weight: 900;
+  font-size: 29px;
+  color: #fff8e7;
+
+  text-shadow:
+    0 2px 0 #8b642b,
+    0 4px 0 #493219,
+    0 6px 7px #000a;
+}
+
+/* 5% - CENTRO DEL SECTOR DE 205.2 GRADOS */
+
+.label-5 {
+  top: 55%;
+  left: 75%;
+  transform: translate(-50%,-50%);
+}
+
+/* 10% - CENTRO DEL SECTOR DE 90 GRADOS */
+
+.label-10 {
+  top: 70%;
+  left: 30%;
+  transform: translate(-50%,-50%);
+  font-size: 25px;
+}
+
+/* 15% - CENTRO DEL SECTOR DE 64.8 GRADOS */
+
+.label-15 {
+  top: 23%;
+  left: 36%;
+  transform: translate(-50%,-50%);
+  color: #25313b;
+
+  text-shadow:
+    0 1px 0 #fff,
+    0 3px 0 #7599ad,
+    0 5px 6px #0005;
+
+  font-size: 25px;
+}
+
+/* CENTRO METALICO 3D */
+
+.wheel-center {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  z-index: 6;
+
+  display: grid;
+  place-items: center;
+
+  background: linear-gradient(
+    145deg,
+    #fff3c4,
+    #c99a47 35%,
+    #76501f 65%,
+    #ffe9a6
+  );
+
+  border: 5px solid #60401d;
+
+  box-shadow:
+    0 5px 0 #503417,
+    0 9px 12px #0008,
+    inset 0 2px 5px #fff9;
+}
+
+.wheel-center span {
+  display: grid;
+  place-items: center;
+  width: 47px;
+  height: 47px;
+  border-radius: 50%;
+
+  background: linear-gradient(
+    145deg,
+    #fff9e6,
+    #e0bb76
+  );
+
+  color: #9d6b27;
+  font-size: 35px;
+  text-shadow: 0 2px 2px #fff;
+}
+
+/* PUA DORADA */
+
+.pointer {
+  position: absolute;
+  width: 46px;
+  height: 58px;
+  left: 50%;
+  top: 7px;
+  transform: translateX(-50%);
+  z-index: 8;
+
+  background: linear-gradient(
+    90deg,
+    #79511f,
+    #ffe9a4 45%,
+    #b17b34 75%,
+    #513419
+  );
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    50% 100%
+  );
+
+  filter: drop-shadow(0 5px 4px #0008);
+}
+
+/* FORMULARIO */
+
+input,button {
   width: 100%;
   padding: 16px;
   border-radius: 12px;
@@ -208,6 +388,14 @@ button:disabled {
   h2 {
     font-size: 23px;
   }
+
+  .wheel-label {
+    font-size: 24px;
+  }
+
+  .label-10,.label-15 {
+    font-size: 22px;
+  }
 }
 </style>
 </head>
@@ -217,51 +405,95 @@ button:disabled {
 
 <small>ROPA CON PROPÓSITO · 180926</small>
 
-<img class="brand-logo" src="logo-ebenezer.png" alt="EBEN-EZER 7:12">
+<img
+  class="brand-logo"
+  src="logo-ebenezer.png"
+  alt="EBEN-EZER 7:12"
+>
 
-<h2>GIRÁ Y GANÁ <span class="red">HASTA 15% OFF</span></h2>
+<h2>
+  GIRÁ Y GANÁ
+  <span class="red">HASTA 15% OFF</span>
+</h2>
 
-<p>Ingresá tu usuario de Instagram y descubrí tu descuento para tu próxima compra.</p>
+<p>
+Ingresá tu usuario de Instagram y descubrí tu descuento
+para tu próxima compra.
+</p>
 
 <div class="wheel-scene">
-  <img class="decor-skate" src="skate-corazon.png" alt="">
-  <img class="decor-ebi" src="ebi.png" alt="">
-  <div class="pointer">▼</div>
-  <div class="wheel" id="wheel">
-    <span>5%</span>
-    <span>10%</span>
-    <span>15%</span>
+
+  <img
+    class="decor-skate"
+    src="skate-corazon.png"
+    alt=""
+  >
+
+  <img
+    class="decor-ebi"
+    src="ebi.png"
+    alt=""
+  >
+
+  <div class="pointer"></div>
+
+  <div class="wheel-frame">
+
+    <div class="wheel" id="wheel">
+
+      <div class="divider one"></div>
+      <div class="divider two"></div>
+      <div class="divider three"></div>
+
+      <span class="wheel-label label-5">5%</span>
+      <span class="wheel-label label-10">10%</span>
+      <span class="wheel-label label-15">15%</span>
+
+      <div class="wheel-center">
+        <span>✦</span>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
-<input id="instagram" placeholder="@tu_usuario_de_instagram" autocomplete="off" maxlength="31">
+<input
+  id="instagram"
+  placeholder="@tu_usuario_de_instagram"
+  autocomplete="off"
+  maxlength="31"
+>
 
 <button id="spin">GIRAR RULETA ✦</button>
 
 <div id="result" aria-live="polite"></div>
 
 <p class="foot">
-Un intento por usuario de Instagram. La identidad no se verifica automáticamente.
-Descuento sujeto a validación de EBEN-EZER. No compartas tu código públicamente.
+Un intento por usuario de Instagram.
+La identidad no se verifica automáticamente.
+Descuento sujeto a validación de EBEN-EZER.
+No compartas tu código públicamente.
 </p>
 
-<small>HASTA AQUÍ NOS AYUDÓ JEHOVÁ · 1 SAMUEL 7:12</small>
+<small>
+HASTA AQUÍ NOS AYUDÓ JEHOVÁ · 1 SAMUEL 7:12
+</small>
 
 </main>
 
 <script>
-// Antes de publicar, configurar y proteger la Edge Function en Supabase.
-
 const FUNCTION_URL = 'https://bekcefeuaplahtpahrst.supabase.co/functions/v1/Girar-ruleta-';
 const ANON_KEY = 'sb_publishable_HM7kz1zNu_M_onoZXDLPww_a7Htj6sd';
 
-const btn = document.getElementById('spin'),
-      result = document.getElementById('result'),
-      wheel = document.getElementById('wheel');
+const btn = document.getElementById('spin');
+const result = document.getElementById('result');
+const wheel = document.getElementById('wheel');
 
 let angle = 0;
 
 btn.onclick = async () => {
+
   const instagram = document.getElementById('instagram').value.trim();
 
   if (!/^@?[a-zA-Z0-9._]{1,30}$/.test(instagram)) {
@@ -270,7 +502,7 @@ btn.onclick = async () => {
   }
 
   if (ANON_KEY.startsWith('REEMPLAZAR')) {
-    result.textContent = 'La ruleta todavía no está conectada. Falta configurar la clave pública.';
+    result.textContent = 'La ruleta todavía no está conectada.';
     return;
   }
 
@@ -278,6 +510,7 @@ btn.onclick = async () => {
   result.textContent = 'Verificando participación…';
 
   try {
+
     const res = await fetch(FUNCTION_URL, {
       method: 'POST',
       headers: {
@@ -295,21 +528,46 @@ btn.onclick = async () => {
     }
 
     const discount = data.descuento;
-    const sector = {5:90,10:242,15:332}[discount];
 
-    angle += 1800 + ((360-sector-angle%360+360)%360);
+    /*
+      DISTRIBUCION FINAL:
+
+      5%  = 57% = 205.2 grados
+      10% = 25% = 90 grados
+      15% = 18% = 64.8 grados
+
+      CENTROS:
+      5%  = 102.6 grados
+      10% = 250.2 grados
+      15% = 327.6 grados
+    */
+
+    const sector = {
+      5: 102.6,
+      10: 250.2,
+      15: 327.6
+    }[discount];
+
+    if (sector === undefined) {
+      throw Error('Descuento no reconocido.');
+    }
+
+    angle += 1800 + ((360 - sector - angle % 360 + 360) % 360);
+
     wheel.style.transform = `rotate(${angle}deg)`;
 
     result.textContent = '¡Girando…!';
 
     setTimeout(() => {
-      result.innerHTML = `¡GANASTE ${discount}% OFF!<br><small>Código: ${data.codigo}</small>`;
+      result.innerHTML =
+        `¡GANASTE ${discount}% OFF!<br><small>Código: ${data.codigo}</small>`;
     }, 5100);
 
   } catch(e) {
     result.textContent = e.message;
     btn.disabled = false;
   }
+
 };
 </script>
 
